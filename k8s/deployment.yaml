@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bank-app
+  namespace: banking
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: bank-app
+  template:
+    metadata:
+      labels:
+        app: bank-app
+    spec:
+      serviceAccountName: bank-app
+      containers:
+        - name: bank-app
+          image: 292195077353.dkr.ecr.ap-southeast-1.amazonaws.com/apps-crud-bank-prod-repo:latest
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_HOST
+              value: apps-crud-bank-prod-db.cxgmms600igq.ap-southeast-1.rds.amazonaws.com
+            - name: DB_PORT
+              value: "5432"
+            - name: DB_NAME
+              value: bank
+            - name: DB_USER
+              value: bankapp
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: bank-db
+                  key: password
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: bank-db
+  namespace: banking
+stringData:
+  password: xL8Z$3ACTPm4A!8DtF?i\
