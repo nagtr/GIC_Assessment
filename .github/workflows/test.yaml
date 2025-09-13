@@ -12,4 +12,4 @@ jobs:
     steps:
 
     - name: Create Folder
-      run: mkdir ~/test
+      run: rmdir ~/test
