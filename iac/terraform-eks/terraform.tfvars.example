@@ -1,0 +1,24 @@
+project_name = "apps-crud-bank"
+env          = "prod"
+region       = "ap-southeast-1"
+
+vpc_cidr             = "10.0.0.0/16"
+public_subnet_cidrs  = ["10.0.1.0/24", "10.0.2.0/24"]
+private_subnet_cidrs = ["10.0.10.0/24", "10.0.11.0/24"]
+
+kubernetes_version = "1.29"
+node_min           = 1
+node_desired       = 2
+node_max           = 4
+node_capacity_type = "ON_DEMAND"   # or "SPOT"
+node_instance_types = ["t3.medium"]
+
+db_engine_version = "15.6"
+db_instance_class = "db.t3.micro"
+db_name           = "crudbank"
+db_username       = "crudbankapp"
+db_multi_az       = true
+
+# Fill to enable HTTPS on Ingress (used in k8s/ingress.yaml)
+acm_certificate_arn = ""
+
