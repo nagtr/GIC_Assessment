@@ -40,4 +40,4 @@ metadata:
   name: bank-db
   namespace: banking
 stringData:
-  password: Singa456
+  password: xxxxxx
