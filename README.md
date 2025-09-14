@@ -70,13 +70,22 @@ E) CI/CD (GitHub Actions on self-hosted
 Getting started
 =====================
 
-**Terraform: terraform init && terraform apply**
+**Terraform:** 
+ terraform init && terraform apply
 (VPC/NAT, EKS, node group, ECR, RDS, IAM/IRSA, outputs)
 
 **Kubeconfig:**
 aws eks update-kubeconfig --name <cluster> --region <region>
 
 **ALB Controller** (Helm install with your cluster/vpc/region + IRSA SA).
+helm repo add eks https://aws.github.io/eks-charts
+helm upgrade --install aws-load-balancer-controller eks/aws-load-balancer-controller \
+  -n kube-system \
+  --set clusterName=<cluster_name> \
+  --set serviceAccount.create=false \
+  --set serviceAccount.name=aws-load-balancer-controller \
+  --set region=<region)>\
+  --set vpcId=<vpc_id>
 
 **Secrets:**
 
@@ -86,15 +95,15 @@ Prod: install Secrets Store CSI + create SecretProviderClass.
 
 **App manifests:**
 
-kubectl apply -f k8s/namespace.yaml
+kubectl apply -f aws_eks/namespace.yaml
 
-kubectl apply -f k8s/sa-irsa.yaml (if needed for app)
+kubectl apply -f aws_eks/sa-irsa.yaml (if needed for app)
 
-kubectl apply -f k8s/deployment.yaml
+kubectl apply -f aws_eks/deployment.yaml
 
-kubectl apply -f k8s/service.yaml
+kubectl apply -f aws_eks/service.yaml
 
-kubectl apply -f k8s/ingress.yaml
+kubectl apply -f aws_eks/ingress.yaml
 
 **Verify:**
 
