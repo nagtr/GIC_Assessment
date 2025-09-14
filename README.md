@@ -44,16 +44,27 @@ images, pushes them to Amazon ECR, and deploys them to EKS automatically
 
 Prerequisites
 =====================
+
 A) Accounts, access & permissions - AWS and Github
+
 B) Local tools (versions that work well)
+
    Terraform ≥ 1.6
+   
    AWS CLI ≥ 2.9 (aws --version)
+   
    kubectl matching your cluster’s Kubernetes version (kubectl version --client)
+   
    helm ≥ 3.12
+   
    Docker (engine/desktop) to build images
+   
    jq, curl, psql (for quick tests)
+   
 C) Terraform variables/inputs
+
 D) Kubernetes add-ons (via Helm/kubectl)
+
 E) CI/CD (GitHub Actions on self-hosted
 
 Getting started
