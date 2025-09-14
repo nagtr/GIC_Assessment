@@ -16,7 +16,7 @@ spec:
       serviceAccountName: bank-app
       containers:
         - name: bank-app
-          image: 292195077353.dkr.ecr.ap-southeast-1.amazonaws.com/apps-crud-bank-prod-repo:latest
+          image: 292195077353.dkr.ecr.ap-southeast-1.amazonaws.com/apps-crud-bank-prod-repo:model-file-fix
           ports:
             - containerPort: 8080
           env:
@@ -40,4 +40,4 @@ metadata:
   name: bank-db
   namespace: banking
 stringData:
-  password: xL8Z$3ACTPm4A!8DtF?i\
+  password: Singa456

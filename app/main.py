@@ -3,9 +3,9 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 from decimal import Decimal
 
-from .db import SessionLocal, init_db
-from .models import Account
-from .schemas import CreateAccountReq, BalanceResp, AmountReq, MessageResp, AccountResp
+from db import SessionLocal, init_db
+from models import Account
+from schemas import CreateAccountReq, BalanceResp, AmountReq, MessageResp, AccountResp
 
 app = FastAPI(title="Banking API", version="1.0.0")
 
