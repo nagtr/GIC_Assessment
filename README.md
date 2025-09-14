@@ -78,6 +78,7 @@ Getting started
 aws eks update-kubeconfig --name <cluster> --region <region>
 
 **ALB Controller** (Helm install with your cluster/vpc/region + IRSA SA).
+
 helm repo add eks https://aws.github.io/eks-charts
 helm upgrade --install aws-load-balancer-controller eks/aws-load-balancer-controller \
   -n kube-system \
