@@ -1,0 +1,57 @@
+name: build-and-deploy-eks-selfhosted
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    name: Build & Deploy to EKS
+    runs-on: [self-hosted, nagendra]   # <--- targets your self-hosted runner
+
+    env:
+      AWS_REGION: ap-southeast-1
+      ECR_REPOSITORY: banking-app-prod-repo
+      EKS_CLUSTER: banking-app-prod-cluster
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build & Push Docker image
+        run: |
+          IMAGE_TAG=${GITHUB_SHA::7}
+          ECR_REGISTRY=${{ steps.login-ecr.outputs.registry }}
+          IMAGE=$ECR_REGISTRY/${{ env.ECR_REPOSITORY }}:$IMAGE_TAG
+
+          docker build -t "$IMAGE" app
+          docker push "$IMAGE"
+
+          echo "IMAGE=$IMAGE" >> $GITHUB_ENV
+
+      - name: Update kubeconfig for EKS
+        run: aws eks update-kubeconfig --name $EKS_CLUSTER --region $AWS_REGION
+
+      - name: Render manifests with image
+        run: |
+          sed -i "s#REPLACE_ECR_REPO_URL:latest#${IMAGE}#g" k8s/deployment.yaml
+          sed -i "s#REPLACE_DB_HOST#${{ secrets.DB_HOST }}#g" k8s/deployment.yaml
+
+      - name: Apply manifests
+        run: |
+          kubectl apply -f k8s/namespace.yaml
+          kubectl apply -f k8s/sa-irsa.yaml
+          kubectl apply -f k8s/deployment.yaml
+          kubectl apply -f k8s/service.yaml
+          kubectl apply -f k8s/ingress.yaml
