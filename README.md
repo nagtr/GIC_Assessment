@@ -25,7 +25,7 @@ Amazon ECR, and deployment to EKS.
 High-Level Architecture Diagram
 =================================
 
-<img width="533" height="343" alt="image" src="https://github.com/user-attachments/assets/96adad0b-2dc3-4910-afcd-8b5e143937b2" />
+<img width="576" height="334" alt="image" src="https://github.com/user-attachments/assets/8788e1d2-9d41-4cfb-96ef-3cc615d292e6" />
 
 Solution Flow
 ====================
